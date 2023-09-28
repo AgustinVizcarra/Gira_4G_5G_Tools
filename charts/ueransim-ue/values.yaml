@@ -1,0 +1,64 @@
+# Default values for ueransim-ue.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+  imageRegistry: ""
+  ## E.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+  storageClass: ""
+
+## Repositorio de docker
+image:
+  registry: docker.io
+  repository: agustinvl/gira
+  tag: ueransim
+  pullPolicy: Always
+  pullSecrets: []
+  debug: false
+  # Overrides the image tag whose default is the chart appVersion.
+  
+## Nombre 
+name: ueransim-ue
+enabled: true
+## Configuraciones ##
+## Direccion IP del gNodeB
+gnb_ip: 127.0.0.1
+## Mobile Country Code (MCC)
+mcc: '999'
+## Mobile Network Code (MNC)
+mnc: '71'
+## Mobile Station Integrated Services Digital Network (MSISDN)
+msisdn: '0000000001'
+## Permanent Subscription key
+key: 465B5CE8B199B49FAA5F0A2EE238A6BC
+## Operator Code (OP)
+op:  E8ED289DEBA952E4283B54E88E6183CA
+## OP type (OPC o OP)
+optype: OPC
+## IMEI
+imei: '356938035643803'
+## IMEI sv (Software Version)
+imeiSv: '4370816125816151' 
+## APN's
+apnList:
+  - type: 'IPv4'
+    apn: 'internet'
+    slice:
+      sst: 1
+      sd: "0x111111"
+    emergency: false
+## Slice/Service Type (SST)
+sst: 1
+## Slice Diferentiator (SD)
+sd: 1
+## Servicio ##
+service:
+  # Puerto por donde escuchará al gNodeB
+  port: 4455
+# Recursos
+resources:
+  limits: {}
+  requests: {}

@@ -1,0 +1,19 @@
+apiVersion: v2
+name: ueransim-ue
+annotations:
+  category: apps
+appVersion: 1.0.0
+description: Helm Chart para el despliegue de un UERANSIM UE
+home: https://github.com/aligungr/UERANSIM
+icon: https://github.com/aligungr/UERANSIM/raw/master/.github/logo.png
+type: application
+keywords:
+  - Open Source Tool
+  - GIRA
+  - CNF
+version: 0.1.0
+maintainers:
+  - email: a.vizcarra@pucp.edu.pe
+    name: Agustin Vizcarra
+  - email: ronny.pastor@pucp.edu.pe
+    name: Ronny Pastor 

@@ -1,0 +1,8 @@
+ueransim-gnb successfully installed!
+Check Ueransim-UE log with:
+
+```
+kubectl -n {{ .Release.Namespace }} logs deployment/{{ include "ueransim-ue.fullname" . }}
+```
+
+---
