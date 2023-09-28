@@ -5,11 +5,17 @@ metadata:
   labels:
     {{- include "ueransim-gnb.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  clusterIP: None
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - name: gnb-ue
+      port: {{ .Values.service.ue.port}}
+      protocol: UDP
+    - name: gnb-core
+      port: {{ .Values.service.core.port}}
+      protocol: UDP
+    - name: mgm-connection
+      port: 22
       protocol: TCP
-      name: http
+  publishNotReadyAddresses: true
   selector:
     {{- include "ueransim-gnb.selectorLabels" . | nindent 4 }}

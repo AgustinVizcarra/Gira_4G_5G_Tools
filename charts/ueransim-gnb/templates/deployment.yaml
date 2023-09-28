@@ -2,12 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "ueransim-gnb.fullname" . }}
+  namespace: {{.Release.Namespace | quote}}
   labels:
     {{- include "ueransim-gnb.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "ueransim-gnb.selectorLabels" . | nindent 6 }}
@@ -20,42 +18,35 @@ spec:
       labels:
         {{- include "ueransim-gnb.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+      {{- if .Values.nodeSelector }}
+      ## Para especificar a qué nodo el POD será asignado
+      nodeSelector: {{- include "common.tplvalues.render" ( dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "ueransim-gnb.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.pullSecrets | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        - name: ue
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag}}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext: 
+            privileged: true
           ports:
-            - name: http
-              containerPort: 80
+            - name: mgm-connection
+              containerPort: 22
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            - name: gnb-ue
+              containerPort: {{ .Values.service.ue.port}}
+              protocol: UDP
+            - name: gnb-core
+              containerPort: {{ .Values.service.core.port}}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /home/ubuntu/UERANSIM/config/gnb.yaml
+              subPath: "gnb.yaml"
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "ueransim-gnb.fullname" . }}-configmap
+          
