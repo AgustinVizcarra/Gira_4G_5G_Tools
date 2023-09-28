@@ -1,0 +1,7 @@
+srsran-ue successfully installed!
+Check srs-UE log with:
+```
+kubectl -n {{ .Release.Namespace }} logs deployment/{{ include "srs-ue.fullname" . }}
+```
+
+---

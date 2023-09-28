@@ -62,3 +62,5 @@ service:
 resources:
   limits: {}
   requests: {}
+# Asignación del Nodo
+# nodeSelector: {}

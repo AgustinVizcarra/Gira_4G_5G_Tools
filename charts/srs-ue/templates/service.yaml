@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "srs-ue.fullname" . }}
+  labels:
+    {{- include "srs-ue.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  ports:
+    - name: enb-ue
+      port: 2001 
+      protocol: TCP
+    - name: mgm-connection
+      port: 22
+      protocol: TCP
+  publishNotReadyAddresses: true
+  selector:
+    {{- include "srs-ue.selectorLabels" . | nindent 4 }}

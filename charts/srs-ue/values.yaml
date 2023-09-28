@@ -1,0 +1,54 @@
+# Default values for srs-ue.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+  imageRegistry: ""
+  ## E.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+  storageClass: ""
+## Repositorio de docker
+image:
+  registry: docker.io
+  repository: agustinvl/gira
+  tag: srslte
+  pullPolicy: Always
+  pullSecrets: []
+  debug: false
+  # Overrides the image tag whose default is the chart appVersion.
+## Nombre 
+name: srs-ue
+enabled: true
+## Configuraciones ##
+## Direccion IP del enodeb
+txtoenbIP: 127.0.0.1
+## Dirección IP del UE
+rxfromenbIP: 127.0.0.2
+## Configuraciones del UE ##
+# Operator Configuration Code 
+opc: '63BFA50EE6523365FF14C1F45F88737D'
+# authentication key (k)
+key: '00112233445566778899aabbccddeeff'
+# International Mobile Subscribe Identity (IMSI)
+imsi: '001010123456780'
+# International Mobile Station Equipment Identity (IMEI)
+imei: '353490069873319'
+rf:
+  # Ganancia de la antena de transmisión
+  tx_gain: 80
+slicing:
+  enable: false
+  # Service/Slice Type (SST)
+  sst: 1
+  # Slice diferentiator (SD)
+  sd: 1
+# Configuraciones de entorno
+# Soporte de Interfaz gráfica
+gui:
+  enable: false
+# Soporte de captura de paquetes pcap (ruta -> /tmp/)
+enablecapture: none
+# Asignación del Nodo
+# nodeSelector: {}

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "srs-ue.fullname" . }}
+  namespace: {{.Release.Namespace | quote}}
+  labels:
+    {{- include "srs-ue.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "srs-ue.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "srs-ue.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- if .Values.nodeSelector }}
+      ## Para especificar a qué nodo el POD será asignado
+      nodeSelector: {{- include "common.tplvalues.render" ( dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      containers:
+        - name: ue
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag}}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext: 
+            privileged: true
+          ports:
+            - name: mgm-connection
+              containerPort: 22
+              protocol: TCP
+            - name: enb-ue
+              containerPort: 2001 
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /home/ubuntu/srsRAN_4G/build/srsue/ue.conf
+              subPath: "ue.conf"
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "srs-ue.fullname" . }}-configmap
+          
