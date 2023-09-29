@@ -33,6 +33,8 @@ mnc: '01'
 mme_addr: '127.0.1.100'
 # Direccion del eNodeB (hacia el UE)
 enbIP: '127.0.1.1'
+# Direccion del eNodeB (hacia el core)
+enbIPCore: '127.0.1.95'
 # Direccion del UE (hacia el enb)
 ueIP: '127.0.1.6'
 ## Configuraciones de radiofrecuencia ##
@@ -43,7 +45,13 @@ rf:
 gui:
   enable: false
 ## Configuracion de Radio Resource (RR) ## 
-
+rr:
+  # Cell ID (logical)
+  cell_id: '0x01'
+  # Tracking Area Code (TAC)
+  tac: '0x0007'
+  # Physical Cell Id (PCI)
+  pci: 1
 # Operator Configuration Code 
 opc: '63BFA50EE6523365FF14C1F45F88737D'
 # authentication key (k)
@@ -73,13 +81,5 @@ service:
 capture:
   enable: false
   s1ap_enable: false
-# Configuraciones de radio resource (RR.conf)
-rr:
-  # Cell ID (logical)
-  cell_id: '0x01'
-  # Tracking Area Code (TAC)
-  tac: '0x0007'
-  # Physical Cell Id (PCI)
-  pci: 1
 # Asignación del Nodo
 # nodeSelector: {}
