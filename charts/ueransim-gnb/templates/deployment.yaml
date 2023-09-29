@@ -25,7 +25,7 @@ spec:
       imagePullSecrets:
         {{- toYaml .Values.image.pullSecrets | nindent 8 }}
       containers:
-        - name: ue
+        - name: gnb
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag}}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext: 
@@ -37,8 +37,9 @@ spec:
             - name: gnb-ue
               containerPort: {{ .Values.service.ue.port}}
               protocol: UDP
-            - name: gnb-core
-              containerPort: {{ .Values.service.core.port}}
+            - name: gnb-upf
+              containerPort: {{ .Values.service.upf.port}}
+              protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

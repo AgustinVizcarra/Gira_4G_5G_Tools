@@ -47,7 +47,7 @@ sd: 1
 service:
   ue:
     port: 4433
-  core:
+  upf:
     port: 3344
 # Configuraciones para la asignacion de recursos
 resources:
