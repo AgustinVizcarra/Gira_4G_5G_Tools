@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "srs-enb.fullname" . }}
+  namespace: {{.Release.Namespace | quote}}
+  labels:
+    {{- include "srs-enb.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "srs-enb.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "srs-enb.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- if .Values.nodeSelector }}
+      ## Para especificar a qué nodo el POD será asignado
+      nodeSelector: {{- include "common.tplvalues.render" ( dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      containers:
+        - name: enodeb
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag}}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext: 
+            privileged: true
+          ports:
+            - name: mgm-connection
+              containerPort: 22
+              protocol: TCP
+            - name: enb-ue
+              containerPort: 2000
+              protocol: TCP
+            - name: enb-core
+              containerPort: {{ .Values.service.core.port}}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: srs-enb-config
+              mountPath: /home/ubuntu/srsRAN_4G/build/srsenb/enb.conf
+              subPath: "enb.conf"
+            - name: srs-enb-config
+              mountPath: /home/ubuntu/srsRAN_4G/build/srsenb/rr.conf
+              subPath: "rr.conf"  
+      volumes:
+        - name: srs-enb-config
+          configMap:
+            name: {{ include "srs-enb.fullname" . }}-configmap
+          

@@ -1,0 +1,8 @@
+srs-enb successfully installed!
+Check srs-enb log with:
+
+```
+kubectl -n {{ .Release.Namespace }} logs deployment/{{ include "srs-enb.fullname" . }}
+```
+
+---

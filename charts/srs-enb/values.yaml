@@ -1,0 +1,85 @@
+# Default values for srs-ue.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+  imageRegistry: ""
+  ## E.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+  storageClass: ""
+## Repositorio de docker
+image:
+  registry: docker.io
+  repository: agustinvl/gira
+  tag: srslte
+  pullPolicy: Always
+  pullSecrets: []
+  debug: false
+  # Overrides the image tag whose default is the chart appVersion.
+## Nombre 
+name: srs-enb
+enabled: true
+## Configuraciones ##
+## Parametros del enodeb
+# enodeb id logico
+enb_id: '0x19B'
+# Mobile Country Code (mcc)
+mcc: '001'
+# Mobile Network Code (mnc)
+mnc: '01'
+# Direccion IP del MME
+mme_addr: '127.0.1.100'
+# Direccion del eNodeB (hacia el UE)
+enbIP: '127.0.1.1'
+# Direccion del UE (hacia el enb)
+ueIP: '127.0.1.6'
+## Configuraciones de radiofrecuencia ##
+rf:
+  tx_gain: 80
+  rx_gain: 40
+## Configuraciones de la GUI ##
+gui:
+  enable: false
+## Configuracion de Radio Resource (RR) ## 
+
+# Operator Configuration Code 
+opc: '63BFA50EE6523365FF14C1F45F88737D'
+# authentication key (k)
+key: '00112233445566778899aabbccddeeff'
+# International Mobile Subscribe Identity (IMSI)
+imsi: '001010123456780'
+# International Mobile Station Equipment Identity (IMEI)
+imei: '353490069873319'
+rf:
+  # Ganancia de la antena de transmisión
+  tx_gain: 80
+slicing:
+  enable: false
+  # Service/Slice Type (SST)
+  sst: 1
+  # Slice diferentiator (SD)
+  sd: 1
+# Configuraciones de entorno
+# Soporte de Interfaz gráfica
+gui:
+  enable: false
+# Soporte de captura de paquetes pcap (ruta -> /tmp/)
+service:
+  core:
+    port: 2354
+# Configuraciones para la captura
+capture:
+  enable: false
+  s1ap_enable: false
+# Configuraciones de radio resource (RR.conf)
+rr:
+  # Cell ID (logical)
+  cell_id: '0x01'
+  # Tracking Area Code (TAC)
+  tac: '0x0007'
+  # Physical Cell Id (PCI)
+  pci: 1
+# Asignación del Nodo
+# nodeSelector: {}
