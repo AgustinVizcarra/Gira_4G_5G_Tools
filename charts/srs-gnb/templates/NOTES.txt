@@ -1,0 +1,8 @@
+srs-gnb successfully installed!
+Check srs-gnb log with:
+
+```
+kubectl -n {{ .Release.Namespace }} logs deployment/{{ include "srs-gnb.fullname" . }}
+```
+
+---

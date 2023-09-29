@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "srs-gnb.fullname" . }}
+  namespace: {{.Release.Namespace | quote}}
+  labels:
+    {{- include "srs-gnb.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "srs-gnb.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "srs-gnb.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- if .Values.nodeSelector }}
+      ## Para especificar a qué nodo el POD será asignado
+      nodeSelector: {{- include "common.tplvalues.render" ( dict "value" .Values.nodeSelector "context" $) | nindent 8 }}
+      {{- end }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      containers:
+        - name: enodeb
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag}}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext: 
+            privileged: true
+          ports:
+            - name: mgm-connection
+              containerPort: 22
+              protocol: TCP
+            - name: gnb-ue
+              containerPort: 2000
+              protocol: TCP
+            - name: gnb-core
+              containerPort: {{ .Values.service.core.port}}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: srs-gnb-config
+              mountPath: /home/ubuntu/srsRAN_Project/build/apps/gnb/gnb.yaml
+              subPath: "gnb.yaml"
+      volumes:
+        - name: srs-gnb-config
+          configMap:
+            name: {{ include "srs-gnb.fullname" . }}-configmap

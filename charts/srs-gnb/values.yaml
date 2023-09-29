@@ -1,0 +1,53 @@
+# Default values for srs-ue.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+  imageRegistry: ""
+  ## E.g.
+  ## imagePullSecrets:
+  ##   - myRegistryKeySecretName
+  ##
+  imagePullSecrets: []
+  storageClass: ""
+## Repositorio de docker
+image:
+  registry: docker.io
+  repository: agustinvl/gira
+  tag: srsnr
+  pullPolicy: Always
+  pullSecrets: []
+  debug: false
+  # Overrides the image tag whose default is the chart appVersion.
+## Nombre 
+name: srs-gnb
+enabled: true
+## Configuraciones ##
+## Parametros del gnodeB
+# Direccion del AMF
+amfIP: 10.53.1.2
+# Direccion del gnodeb al core
+gnbIPCore: 10.53.1.4
+# Direccion del gnodeb al UE
+gnbIP: 127.0.0.2
+# Direccion del UE hacia el gnodeb
+ueIP: 127.0.0.1
+# Frecuencia de muestreo (sample_rate)
+sample_rate: 11.52
+# Ganancia de la antena de transmision (dB)
+tx_gain: 75
+# Ganancia de la antena de recepcion (dB)
+rx_gain: 75
+# Public Land Mobile Network (PLMN)
+plmn: "00101"
+# Tracking Area Code (TAC)
+tac: 7
+# Configuraciones del servicio
+service:
+  core:
+    port: 2354
+# Configuraciones para la captura
+pcap:
+  mac_enable: false
+  ngap_enable: false
+# Asignación del Nodo
+# nodeSelector: {}

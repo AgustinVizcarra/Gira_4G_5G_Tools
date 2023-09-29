@@ -1,0 +1,19 @@
+apiVersion: v2
+name: srs-gnb
+annotations:
+  category: apps
+appVersion: 1.0.0
+description: Helm Chart para el despliegue de un srsRAN gNodeB (NR)
+home: https://docs.srsran.com/projects/project/en/latest/index.html
+icon: https://docs.srsran.com/projects/project/en/latest/_static/logo.png
+type: application 
+keywords:
+  - Open Source Tool
+  - GIRA
+  - CNF
+version: 0.1.0
+maintainers:
+  - email: a.vizcarra@pucp.edu.pe
+    name: Agustin Vizcarra
+  - email: ronny.pastor@pucp.edu.pe
+    name: Ronny Pastor 
