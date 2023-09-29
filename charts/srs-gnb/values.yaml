@@ -49,5 +49,9 @@ service:
 pcap:
   mac_enable: false
   ngap_enable: false
+# Asignacion de recursos
+resources:
+  limits: {}
+  requests: {}
 # Asignación del Nodo
 # nodeSelector: {}
