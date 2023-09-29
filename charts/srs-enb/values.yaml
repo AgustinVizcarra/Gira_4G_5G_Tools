@@ -81,5 +81,9 @@ service:
 capture:
   enable: false
   s1ap_enable: false
+# Asignacion de recursos
+resources:
+  limits: {}
+  requests: {}
 # Asignación del Nodo
 # nodeSelector: {}
