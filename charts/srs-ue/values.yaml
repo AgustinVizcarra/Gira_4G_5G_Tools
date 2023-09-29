@@ -50,5 +50,9 @@ gui:
   enable: false
 # Soporte de captura de paquetes pcap (ruta -> /tmp/)
 enablecapture: none
+# Asignacion de recursos
+resources:
+  limits: {}
+  requests: {}
 # Asignación del Nodo
 # nodeSelector: {}
